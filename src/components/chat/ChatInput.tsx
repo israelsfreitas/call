@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Smile, Send } from 'lucide-react';
 import { useRoomStore } from '../../stores/roomStore';
+import { useHubStore } from '../../stores/hubStore';
 import { signalingClient } from '../../signaling/client';
 import { EmojiPicker } from './EmojiPicker';
 
@@ -12,10 +13,14 @@ export const ChatInput: React.FC = () => {
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = text.trim();
+    if (!trimmed || !currentRoom) return;
+
     // Despacho otimista imediato
-    const selfId = useHubStore.getState().selfId;
-    const selfName = useHubStore.getState().selfName;
-    const selfColor = useHubStore.getState().selfColor;
+    const hubState = useHubStore.getState();
+    const selfId = hubState.selfId || hubState.clientId || 'anonymous';
+    const selfName = hubState.name || 'Anônimo';
+    const selfColor = hubState.color || '#171717';
+
     useRoomStore.getState().addChatMessage({
       id: crypto.randomUUID(),
       roomId: currentRoom.id,

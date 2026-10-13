@@ -26,9 +26,10 @@ export const Sidebar: React.FC = () => {
     // Feedback visual instantâneo na interface
     const targetRoomDef = rooms.find(r => r.id === roomId);
     if (targetRoomDef) {
-      const selfId = useHubStore.getState().selfId;
-      const selfName = useHubStore.getState().selfName;
-      const selfColor = useHubStore.getState().selfColor;
+      const hubState = useHubStore.getState();
+      const selfId = hubState.selfId || hubState.clientId || 'me';
+      const selfName = hubState.name || 'Anônimo';
+      const selfColor = hubState.color || '#171717';
       setRoomJoined(
         {
           id: roomId,
@@ -54,7 +55,7 @@ export const Sidebar: React.FC = () => {
     setVoiceConnecting(true);
 
     try {
-      if (typeof navigator !== 'undefined' && navigator.mediaDevices?.getUserMedia) {
+      if (typeof navigator !== 'undefined' && typeof navigator.mediaDevices?.getUserMedia === 'function') {
         const stream = await DeviceManager.getMicrophone(selectedAudioInputId);
         setMicStream(stream);
         await webRtcMesh.setLocalMicTrack(stream.getAudioTracks()[0]);
