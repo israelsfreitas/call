@@ -4,34 +4,34 @@ import { useUIStore } from '../../stores/uiStore';
 import { ArrowRight, Lock, User, AlertCircle, ShieldCheck, Sun, Moon } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
-  const { authenticate } = useHubStore();
+  const { loginWithName, authenticate } = useHubStore();
   const { theme, toggleTheme } = useUIStore();
   const cachedName = localStorage.getItem('call_user_name') || '';
 
-  const [password, setPassword] = useState('');
   const [name, setName] = useState(cachedName);
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [step, setStep] = useState<'password' | 'name'>('password');
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.trim() === 'call' || password.trim() === '1234') {
-      setError('');
-      setStep('name');
-    } else {
-      setError('Senha inválida. Use a senha de acesso (ex: "call" ou "1234").');
-    }
-  };
-
-  const handleNameSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) {
-      setError('Por favor, informe seu nome para entrar.');
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setError('Por favor, informe seu nome ou apelido para entrar.');
       return;
     }
-    const success = authenticate(password || 'call', name.trim());
-    if (!success) {
-      setError('Erro ao autenticar. Tente novamente.');
+
+    if (showPassword && password.trim()) {
+      const success = authenticate(password.trim(), trimmedName);
+      if (!success) {
+        setError('Senha inválida. Deixe em branco para entrar sem senha ou use "call" / "1234".');
+        return;
+      }
+    } else {
+      const success = loginWithName(trimmedName);
+      if (!success) {
+        setError('Erro ao entrar. Tente novamente.');
+      }
     }
   };
 
@@ -68,19 +68,19 @@ export const LoginView: React.FC = () => {
           <div className="flex items-center justify-between pb-3.5 border-b border-[#E7E6DF] dark:border-[#2A2A28]">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-[14px] bg-[#EFEEE8] dark:bg-[#242422] text-[#171717] dark:text-[#F5F5F0] border border-[#E7E6DF] dark:border-[#2A2A28] flex items-center justify-center shrink-0">
-                {step === 'password' ? <Lock className="w-4 h-4 stroke-[2]" /> : <User className="w-4 h-4 stroke-[2]" />}
+                <User className="w-4 h-4 stroke-[2]" />
               </div>
               <div>
                 <h2 className="text-sm font-bold tracking-tight text-[#171717] dark:text-[#F5F5F0]">
-                  {step === 'password' ? 'Acesso com Senha' : 'Escolha seu Nome'}
+                  Entrar na Chamada
                 </h2>
                 <p className="text-[11px] text-[#686861] dark:text-[#A3A39C] tracking-tight">
-                  {step === 'password' ? 'Informe a senha única do servidor' : 'Seu nome ficará salvo no navegador'}
+                  Apenas informe seu nome para começar
                 </p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFEEE8] dark:bg-[#242422] text-[#171717] dark:text-[#F5F5F0] border border-[#E7E6DF] dark:border-[#2A2A28] text-[10px] font-bold uppercase tracking-wider font-mono">
-              {step === 'password' ? 'Etapa 1/2' : 'Etapa 2/2'}
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EFEEE8] dark:bg-[#242422] text-[#171717] dark:text-[#F5F5F0] border border-[#E7E6DF] dark:border-[#2A2A28] text-[10px] font-bold uppercase tracking-wider font-mono">
+              Acesso Livre
             </span>
           </div>
 
@@ -91,12 +91,46 @@ export const LoginView: React.FC = () => {
             </div>
           )}
 
-          {step === 'password' ? (
-            <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
-                  Senha única de acesso
-                </label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
+                Seu nome ou apelido
+              </label>
+              <div className="flex items-center gap-3 bg-white dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] rounded-[18px] px-4 py-3 focus-within:border-[#171717] dark:focus-within:border-[#B7FF2A] focus-within:ring-4 focus-within:ring-[#B7FF2A]/20 transition-all">
+                <User className="w-4 h-4 text-[#92928A] dark:text-[#73736C] shrink-0" />
+                <input
+                  type="text"
+                  maxLength={24}
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setError('');
+                  }}
+                  placeholder="Como quer ser chamado?"
+                  className="flex-1 outline-none bg-transparent text-sm text-[#171717] dark:text-[#F5F5F0] placeholder-[#92928A] dark:placeholder-[#73736C]"
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {/* Opção para entrar com senha se desejar */}
+            {showPassword ? (
+              <div className="flex flex-col gap-1.5 animate-in fade-in duration-150">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
+                    Senha do servidor (opcional)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPassword(false);
+                      setPassword('');
+                    }}
+                    className="text-[11px] text-[#92928A] hover:text-[#171717] dark:hover:text-white underline cursor-pointer"
+                  >
+                    Ocultar senha
+                  </button>
+                </div>
                 <div className="flex items-center gap-3 bg-white dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] rounded-[18px] px-4 py-3 focus-within:border-[#171717] dark:focus-within:border-[#B7FF2A] focus-within:ring-4 focus-within:ring-[#B7FF2A]/20 transition-all">
                   <Lock className="w-4 h-4 text-[#92928A] dark:text-[#73736C] shrink-0" />
                   <input
@@ -106,69 +140,37 @@ export const LoginView: React.FC = () => {
                       setPassword(e.target.value);
                       setError('');
                     }}
-                    placeholder="Digite a senha (ex: call ou 1234)"
+                    placeholder="Digite a senha se configurada (ex: call)"
                     className="flex-1 outline-none bg-transparent text-sm text-[#171717] dark:text-[#F5F5F0] placeholder-[#92928A] dark:placeholder-[#73736C]"
-                    autoFocus
                   />
                 </div>
               </div>
-
-              <button
-                type="submit"
-                disabled={!password.trim()}
-                className="w-full mt-2 bg-[#B7FF2A] hover:bg-[#A6EC1F] text-[#171717] font-semibold py-3.5 rounded-[16px] tactile-btn shadow-[0_4px_16px_rgba(183,255,42,0.35)] transition-all duration-200 text-sm tracking-tight flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span>Continuar</span>
-                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleNameSubmit} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
-                  Seu nome ou apelido
-                </label>
-                <div className="flex items-center gap-3 bg-white dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] rounded-[18px] px-4 py-3 focus-within:border-[#171717] dark:focus-within:border-[#B7FF2A] focus-within:ring-4 focus-within:ring-[#B7FF2A]/20 transition-all">
-                  <User className="w-4 h-4 text-[#92928A] dark:text-[#73736C] shrink-0" />
-                  <input
-                    type="text"
-                    maxLength={24}
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                      setError('');
-                    }}
-                    placeholder="Como quer ser chamado?"
-                    className="flex-1 outline-none bg-transparent text-sm text-[#171717] dark:text-[#F5F5F0] placeholder-[#92928A] dark:placeholder-[#73736C]"
-                    autoFocus
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 mt-2">
+            ) : (
+              <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => setStep('password')}
-                  className="px-4 py-3.5 rounded-[16px] bg-[#EFEEE8] dark:bg-[#242422] hover:bg-[#E7E6DF] dark:hover:bg-[#2E2E2C] text-[#171717] dark:text-[#F5F5F0] border border-[#E7E6DF] dark:border-[#2A2A28] text-xs font-semibold tracking-tight transition-all tactile-btn cursor-pointer"
+                  onClick={() => setShowPassword(true)}
+                  className="text-[11px] text-[#92928A] hover:text-[#171717] dark:hover:text-[#F5F5F0] transition-colors cursor-pointer"
                 >
-                  Voltar
-                </button>
-                <button
-                  type="submit"
-                  disabled={!name.trim()}
-                  className="flex-1 bg-[#B7FF2A] hover:bg-[#A6EC1F] text-[#171717] font-semibold py-3.5 rounded-[16px] tactile-btn shadow-[0_4px_16px_rgba(183,255,42,0.35)] transition-all duration-200 text-sm tracking-tight flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
-                  <span>Entrar no CALL</span>
+                  Usar senha de servidor?
                 </button>
               </div>
-            </form>
-          )}
+            )}
+
+            <button
+              type="submit"
+              disabled={!name.trim()}
+              className="w-full mt-1 bg-[#B7FF2A] hover:bg-[#A6EC1F] text-[#171717] font-semibold py-3.5 rounded-[16px] tactile-btn shadow-[0_4px_16px_rgba(183,255,42,0.35)] transition-all duration-200 text-sm tracking-tight flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
+              <span>Entrar no CALL</span>
+            </button>
+          </form>
         </div>
 
         {/* Informative footer tip */}
         <div className="text-center text-xs text-[#92928A] dark:text-[#73736C]">
-          Senha compartilhada da comunidade. Uma vez autenticado, seu acesso fica salvo neste navegador.
+          Sem necessidade de cadastro. Seu nome fica salvo no navegador para os próximos acessos.
         </div>
       </div>
     </div>

@@ -26,6 +26,7 @@ interface HubState {
   color: string;
   connectionStatus: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
   rooms: RoomSummary[];
+  loginWithName: (chosenName: string) => boolean;
   authenticate: (password: string, chosenName: string) => boolean;
   setName: (name: string) => void;
   initIdentity: () => void;
@@ -58,6 +59,28 @@ export const useHubStore = create<HubState>((set, get) => ({
     if (get().isAuthenticated && name) {
       signalingClient.setIdentity(clientId, name);
     }
+  },
+
+  loginWithName: (chosenName: string) => {
+    const trimmedName = chosenName.trim().slice(0, 24);
+    if (!trimmedName) return false;
+
+    localStorage.setItem('call_authenticated', 'true');
+    localStorage.setItem('call_user_name', trimmedName);
+
+    const clientId = get().clientId || crypto.randomUUID();
+    const color = getDeterministicColor(clientId);
+
+    set({
+      isAuthenticated: true,
+      name: trimmedName,
+      clientId,
+      color
+    });
+
+    signalingClient.setIdentity(clientId, trimmedName);
+    signalingClient.connect();
+    return true;
   },
 
   authenticate: (password: string, chosenName: string) => {
