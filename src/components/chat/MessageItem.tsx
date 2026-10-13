@@ -38,15 +38,15 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   };
 
   return (
-    <div className="flex items-start gap-2.5 py-1 px-1.5 rounded-[14px] hover:bg-[#FFFFFF]/70 transition-colors group">
+    <div className="flex items-start gap-2.5 py-1 px-1.5 rounded-[14px] hover:bg-[#FFFFFF]/70 dark:hover:bg-[#181817]/70 transition-colors group">
       <Avatar name={message.authorName} color={message.authorColor} size="sm" className="mt-0.5" />
 
       <div className="flex flex-col flex-1 overflow-hidden">
         <div className="flex items-baseline gap-2">
-          <span className="text-xs font-bold text-[#171717] truncate">
+          <span className="text-xs font-bold text-[#171717] dark:text-[#F5F5F0] truncate">
             {message.authorName}
           </span>
-          <span className="text-[10px] text-[#92928A] font-mono shrink-0">
+          <span className="text-[10px] text-[#92928A] dark:text-[#73736C] font-mono shrink-0">
             {formattedDate}
           </span>
         </div>
@@ -57,7 +57,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               {textTrimmed}
             </div>
           ) : (
-            <div className="inline-block px-3 py-1.5 rounded-[16px] rounded-tl-sm bg-[#FFFFFF] border border-[#E7E6DF] text-xs text-[#171717] leading-relaxed break-words max-w-[95%] select-text shadow-[0_2px_8px_rgba(0,0,0,0.015)]">
+            <div className="inline-block px-3 py-1.5 rounded-[16px] rounded-tl-sm bg-[#FFFFFF] dark:bg-[#181817] border border-[#E7E6DF] dark:border-[#2A2A28] text-xs text-[#171717] dark:text-[#F5F5F0] leading-relaxed break-words max-w-[95%] select-text shadow-[0_2px_8px_rgba(0,0,0,0.015)]">
               {renderMessageText(message.text)}
             </div>
           )}

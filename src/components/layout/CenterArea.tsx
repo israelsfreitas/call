@@ -8,7 +8,7 @@ export const CenterArea: React.FC = () => {
   const { currentRoom } = useRoomStore();
 
   return (
-    <main className="flex-1 h-full flex flex-col relative overflow-hidden bg-[#F7F6F0] z-10">
+    <main className="flex-1 h-full flex flex-col relative overflow-hidden bg-[#F7F6F0] dark:bg-[#0F0F0E] z-10 transition-colors duration-200">
       {currentRoom ? (
         <>
           <RoomHeader />

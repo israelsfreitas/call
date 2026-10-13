@@ -60,18 +60,18 @@ export const VoiceControlSidebar: React.FC = () => {
   };
 
   return (
-    <div className="p-3 bg-[#FFFFFF] rounded-[20px] border border-[#E7E6DF] shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col gap-2 shrink-0">
-      <div className="flex items-center justify-between pb-2 border-b border-[#E7E6DF]">
+    <div className="p-3 bg-[#FFFFFF] dark:bg-[#181817] rounded-[20px] border border-[#E7E6DF] dark:border-[#2A2A28] shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col gap-2 shrink-0 transition-colors duration-200">
+      <div className="flex items-center justify-between pb-2 border-b border-[#E7E6DF] dark:border-[#2A2A28]">
         <div className="flex items-center gap-2 overflow-hidden">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          <span className="text-xs font-bold text-[#171717] truncate">
+          <span className="text-xs font-bold text-[#171717] dark:text-[#F5F5F0] truncate">
             {currentRoom.name}
           </span>
         </div>
         <button
           onClick={handleLeave}
           title="Desconectar da sala"
-          className="p-1.5 rounded-[10px] bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors tactile-btn cursor-pointer"
+          className="p-1.5 rounded-[10px] bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors tactile-btn cursor-pointer"
         >
           <PhoneOff size={14} />
         </button>
@@ -85,8 +85,8 @@ export const VoiceControlSidebar: React.FC = () => {
           title={isMicMuted ? 'Ativar microfone' : 'Mutar microfone'}
           className={`p-2 rounded-[12px] flex items-center justify-center transition-all tactile-btn cursor-pointer border ${
             isMicMuted
-              ? 'bg-rose-50 border-rose-200 text-rose-700'
-              : 'bg-[#EFEEE8] border-[#E7E6DF] text-[#171717] hover:bg-[#E7E6DF]'
+              ? 'bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-400'
+              : 'bg-[#EFEEE8] dark:bg-[#242422] border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] hover:bg-[#E7E6DF] dark:hover:bg-[#2E2E2C]'
           }`}
         >
           {isMicMuted ? <MicOff size={16} /> : <Mic size={16} />}
@@ -100,7 +100,7 @@ export const VoiceControlSidebar: React.FC = () => {
           className={`p-2 rounded-[12px] flex items-center justify-center transition-all tactile-btn cursor-pointer border ${
             isCameraActive
               ? 'bg-[#B7FF2A] border-[#A6EC1F] text-[#171717] font-bold shadow-[0_2px_8px_rgba(183,255,42,0.35)]'
-              : 'bg-[#EFEEE8] border-[#E7E6DF] text-[#171717] hover:bg-[#E7E6DF]'
+              : 'bg-[#EFEEE8] dark:bg-[#242422] border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] hover:bg-[#E7E6DF] dark:hover:bg-[#2E2E2C]'
           }`}
         >
           {isCameraActive ? <Video size={16} /> : <VideoOff size={16} />}
@@ -115,7 +115,7 @@ export const VoiceControlSidebar: React.FC = () => {
             className={`p-2 rounded-[12px] flex items-center justify-center transition-all tactile-btn cursor-pointer border ${
               isScreenActive
                 ? 'bg-[#B7FF2A] border-[#A6EC1F] text-[#171717] font-bold shadow-[0_2px_8px_rgba(183,255,42,0.35)]'
-                : 'bg-[#EFEEE8] border-[#E7E6DF] text-[#171717] hover:bg-[#E7E6DF]'
+                : 'bg-[#EFEEE8] dark:bg-[#242422] border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] hover:bg-[#E7E6DF] dark:hover:bg-[#2E2E2C]'
             }`}
           >
             {isScreenActive ? <Monitor size={16} /> : <MonitorOff size={16} />}
@@ -128,7 +128,7 @@ export const VoiceControlSidebar: React.FC = () => {
         <button
           onClick={() => setIsSettingsOpen(true)}
           title="Ajustes de dispositivos"
-          className="p-2 rounded-[12px] bg-[#EFEEE8] border border-[#E7E6DF] text-[#171717] hover:bg-[#E7E6DF] flex items-center justify-center transition-all tactile-btn cursor-pointer"
+          className="p-2 rounded-[12px] bg-[#EFEEE8] dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] hover:bg-[#E7E6DF] dark:hover:bg-[#2E2E2C] flex items-center justify-center transition-all tactile-btn cursor-pointer"
         >
           <Settings size={16} />
         </button>

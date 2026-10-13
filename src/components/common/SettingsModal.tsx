@@ -5,8 +5,10 @@ import { useLocalMediaStore } from '../../stores/localMediaStore';
 import { DeviceManager, MediaDeviceInfoList } from '../../media/devices';
 import { webRtcMesh } from '../../rtc/Mesh';
 
+import { Sun, Moon } from 'lucide-react';
+
 export const SettingsModal: React.FC = () => {
-  const { isSettingsOpen, setIsSettingsOpen } = useUIStore();
+  const { isSettingsOpen, setIsSettingsOpen, theme, setTheme } = useUIStore();
   const {
     selectedAudioInputId,
     selectedVideoInputId,
@@ -124,18 +126,51 @@ export const SettingsModal: React.FC = () => {
     <Modal
       isOpen={isSettingsOpen}
       onClose={() => setIsSettingsOpen(false)}
-      title="Ajustes de Dispositivos"
+      title="Ajustes e Aparência"
     >
       <div className="flex flex-col gap-5 text-sm">
+        {/* Seletor de Tema / Aparência */}
+        <div className="flex flex-col gap-1.5 pb-2 border-b border-[#E7E6DF] dark:border-[#2A2A28]">
+          <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
+            Aparência
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setTheme('light')}
+              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-[14px] border text-xs font-semibold transition-all tactile-btn cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-[#171717] text-white border-[#171717]'
+                  : 'bg-[#F7F6F0] dark:bg-[#242422] border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0]'
+              }`}
+            >
+              <Sun size={15} />
+              <span>Modo Claro</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme('dark')}
+              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-[14px] border text-xs font-semibold transition-all tactile-btn cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-[#B7FF2A] text-[#171717] border-[#A6EC1F] font-bold shadow-sm'
+                  : 'bg-[#F7F6F0] dark:bg-[#242422] border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0]'
+              }`}
+            >
+              <Moon size={15} />
+              <span>Modo Escuro</span>
+            </button>
+          </div>
+        </div>
+
         {/* Microfone */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-[#171717]">
+          <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
             Microfone
           </label>
           <select
             value={selectedAudioInputId}
             onChange={(e) => handleAudioInputChange(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] border border-[#E7E6DF] text-[#171717] focus:outline-none focus:border-[#171717]"
+            className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] focus:outline-none focus:border-[#171717] dark:focus:border-[#B7FF2A]"
           >
             {devices.audioInputs.map(dev => (
               <option key={dev.deviceId} value={dev.deviceId}>
@@ -145,8 +180,8 @@ export const SettingsModal: React.FC = () => {
           </select>
           {/* Medidor de nível */}
           <div className="mt-1">
-            <div className="text-[11px] text-[#686861] mb-1">Nível de entrada:</div>
-            <div className="w-full h-2 rounded-full bg-[#EFEEE8] overflow-hidden">
+            <div className="text-[11px] text-[#686861] dark:text-[#A3A39C] mb-1">Nível de entrada:</div>
+            <div className="w-full h-2 rounded-full bg-[#EFEEE8] dark:bg-[#242422] overflow-hidden">
               <div
                 className="h-full bg-emerald-500 transition-all duration-75"
                 style={{ width: `${micLevel}%` }}
@@ -158,13 +193,13 @@ export const SettingsModal: React.FC = () => {
         {/* Saída de áudio */}
         {devices.audioOutputs.length > 0 && (
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-[#171717]">
+            <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
               Saída de áudio
             </label>
             <select
               value={selectedAudioOutputId}
               onChange={(e) => setAudioOutputId(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] border border-[#E7E6DF] text-[#171717] focus:outline-none focus:border-[#171717]"
+              className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] focus:outline-none focus:border-[#171717] dark:focus:border-[#B7FF2A]"
             >
               {devices.audioOutputs.map(dev => (
                 <option key={dev.deviceId} value={dev.deviceId}>
@@ -177,13 +212,13 @@ export const SettingsModal: React.FC = () => {
 
         {/* Câmera */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-[#171717]">
+          <label className="text-xs font-semibold text-[#171717] dark:text-[#F5F5F0]">
             Câmera
           </label>
           <select
             value={selectedVideoInputId}
             onChange={(e) => handleVideoInputChange(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] border border-[#E7E6DF] text-[#171717] focus:outline-none focus:border-[#171717]"
+            className="w-full px-3.5 py-2.5 rounded-[14px] bg-[#F7F6F0] dark:bg-[#242422] border border-[#E7E6DF] dark:border-[#2A2A28] text-[#171717] dark:text-[#F5F5F0] focus:outline-none focus:border-[#171717] dark:focus:border-[#B7FF2A]"
           >
             {devices.videoInputs.map(dev => (
               <option key={dev.deviceId} value={dev.deviceId}>
@@ -192,7 +227,7 @@ export const SettingsModal: React.FC = () => {
             ))}
           </select>
           {/* Prévia da Câmera */}
-          <div className="mt-2 aspect-video rounded-[18px] overflow-hidden bg-[#171717] border border-[#E7E6DF] relative flex items-center justify-center">
+          <div className="mt-2 aspect-video rounded-[18px] overflow-hidden bg-[#171717] border border-[#E7E6DF] dark:border-[#2A2A28] relative flex items-center justify-center">
             <video
               ref={previewVideoRef}
               autoPlay

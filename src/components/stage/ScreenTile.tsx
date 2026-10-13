@@ -65,10 +65,10 @@ export const ScreenTile: React.FC<ScreenTileProps> = ({
     <div
       ref={containerRef}
       onClick={onToggleSpotlight}
-      className={`relative aspect-video rounded-[24px] overflow-hidden bg-[#171717] border transition-all cursor-pointer flex items-center justify-center group ${
+      className={`relative aspect-video rounded-[24px] overflow-hidden bg-[#171717] dark:bg-[#121211] border transition-all cursor-pointer flex items-center justify-center group ${
         isSpotlight
-          ? 'border-[#171717] ring-4 ring-[#B7FF2A]/50 shadow-[0_12px_40px_rgba(0,0,0,0.12)]'
-          : 'border-[#E7E6DF] hover:border-[#DCDCD4] shadow-[0_4px_20px_rgba(0,0,0,0.04)]'
+          ? 'border-[#171717] dark:border-[#B7FF2A] ring-4 ring-[#B7FF2A]/50 shadow-[0_12px_40px_rgba(0,0,0,0.12)]'
+          : 'border-[#E7E6DF] dark:border-[#2A2A28] hover:border-[#DCDCD4] dark:hover:border-[#383835] shadow-[0_4px_20px_rgba(0,0,0,0.04)]'
       }`}
       title={isSpotlight ? 'Clique para ver todos os quadros' : 'Clique para focar esta tela'}
     >
@@ -93,14 +93,14 @@ export const ScreenTile: React.FC<ScreenTileProps> = ({
         {!isSelf && hasAudioTrack && (
           <div
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFFFF] text-[#171717] shadow-md border border-[#E7E6DF] text-xs"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#181817] text-[#171717] dark:text-[#F5F5F0] shadow-md border border-[#E7E6DF] dark:border-[#2A2A28] text-xs"
           >
             <button
               onClick={handleToggleAudio}
-              className="p-1 rounded-full hover:bg-[#EFEEE8] transition-colors cursor-pointer"
+              className="p-1 rounded-full hover:bg-[#EFEEE8] dark:hover:bg-[#242422] transition-colors cursor-pointer"
               title={isAudioMuted ? 'Ativar som da tela' : 'Silenciar som da tela'}
             >
-              {isAudioMuted ? <VolumeX size={14} className="text-rose-600" /> : <Volume2 size={14} />}
+              {isAudioMuted ? <VolumeX size={14} className="text-rose-600 dark:text-rose-400" /> : <Volume2 size={14} />}
             </button>
             <input
               type="range"
@@ -110,7 +110,7 @@ export const ScreenTile: React.FC<ScreenTileProps> = ({
               value={isAudioMuted ? 0 : screenVolume}
               onChange={handleVolumeChange}
               style={{
-                background: `linear-gradient(to right, #171717 ${progressPct}%, #EFEEE8 ${progressPct}%)`
+                background: `linear-gradient(to right, #B7FF2A ${progressPct}%, rgba(150,150,150,0.3) ${progressPct}%)`
               }}
               className="player-scrubber w-16 h-1.5 rounded-full appearance-none cursor-pointer focus:outline-none"
               title={`Volume da tela: ${Math.round(screenVolume * 100)}%`}

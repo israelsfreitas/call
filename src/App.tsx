@@ -16,9 +16,12 @@ import { webRtcMesh } from './rtc/Mesh';
 export const App: React.FC = () => {
   const { isAuthenticated, initIdentity, setWelcome, updateRoomsState, setConnectionStatus } = useHubStore();
   const { setRoomJoined, updateRoomState, addChatMessage } = useRoomStore();
-  const { addToast } = useUIStore();
+  const { addToast, initTheme } = useUIStore();
 
   useEffect(() => {
+    // 0. Inicializa tema escuro / claro
+    initTheme();
+
     // 1. Inicializa identidade e mesh
     initIdentity();
     webRtcMesh.init();
@@ -83,7 +86,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden bg-[#F7F6F0] selection:bg-[#171717] selection:text-white">
+    <div className="h-screen w-screen flex overflow-hidden bg-[#F7F6F0] dark:bg-[#0F0F0E] text-[#171717] dark:text-[#F5F5F0] selection:bg-[#171717] selection:text-white dark:selection:bg-[#B7FF2A] dark:selection:text-[#171717] transition-colors duration-200">
       {/* Barra Lateral Esquerda: Salas + Status Online + Controles de Voz embutidos (100% de altura, até a base) */}
       <Sidebar />
 

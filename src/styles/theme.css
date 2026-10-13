@@ -1,7 +1,7 @@
 :root {
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* YouTools Color Tokens */
+  /* YouTools Color Tokens - Light */
   --bg-canvas: #F7F6F0;
   --bg-surface: #FFFFFF;
   --bg-chip: #EFEEE8;
@@ -25,6 +25,23 @@
   --radius-pill: 9999px;
 }
 
+.dark {
+  /* YouTools Color Tokens - Dark */
+  --bg-canvas: #0F0F0E;
+  --bg-surface: #181817;
+  --bg-chip: #242422;
+  --bg-hover: #1F1F1E;
+  --border-default: #2A2A28;
+  --border-hover: #383835;
+  --ink-primary: #F5F5F0;
+  --text-secondary: #A3A39C;
+  --text-muted: #73736C;
+  --text-mono-muted: #8F8F88;
+  --accent-lime: #B7FF2A;
+  --accent-lime-hover: #C5FF4D;
+  --cta-shadow: rgba(183, 255, 42, 0.25);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -34,6 +51,7 @@ body {
   overflow: hidden;
   height: 100dvh;
   width: 100vw;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
@@ -41,8 +59,17 @@ body {
   color: #ffffff;
 }
 
+.dark ::selection {
+  background-color: #B7FF2A;
+  color: #171717;
+}
+
 input[type="range"], input[type="checkbox"] {
   accent-color: #171717;
+}
+
+.dark input[type="range"], .dark input[type="checkbox"] {
+  accent-color: #B7FF2A;
 }
 
 /* Tactile button microinteraction */
@@ -112,6 +139,15 @@ input[type="range"], input[type="checkbox"] {
   transform: scale(1.2);
 }
 
+.dark .player-scrubber::-webkit-slider-thumb {
+  background: #B7FF2A;
+  border: 2px solid #181817;
+}
+.dark .player-scrubber::-moz-range-thumb {
+  background: #B7FF2A;
+  border: 2px solid #181817;
+}
+
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -126,4 +162,15 @@ input[type="range"], input[type="checkbox"] {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #92928A;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0F0F0E;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #2A2A28;
+  border-radius: 999px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #383835;
 }

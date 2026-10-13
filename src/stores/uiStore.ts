@@ -16,6 +16,8 @@ interface UIState {
   isNameModalOpen: boolean;
   toasts: ToastItem[];
 
+  initTheme: () => void;
+  setTheme: (theme: 'dark' | 'light') => void;
   toggleTheme: () => void;
   toggleSidebar: () => void;
   toggleChat: () => void;
@@ -27,8 +29,30 @@ interface UIState {
   removeToast: (id: string) => void;
 }
 
+const getInitialTheme = (): 'dark' | 'light' => {
+  if (typeof window === 'undefined') return 'dark';
+  const saved = localStorage.getItem('call_theme') || localStorage.getItem('vox_theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+const applyThemeToDOM = (theme: 'dark' | 'light') => {
+  if (typeof document === 'undefined') return;
+  document.documentElement.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+};
+
+const initialTheme = getInitialTheme();
+if (typeof document !== 'undefined') {
+  applyThemeToDOM(initialTheme);
+}
+
 export const useUIStore = create<UIState>((set, get) => ({
-  theme: (localStorage.getItem('vox_theme') as 'dark' | 'light') || 'dark',
+  theme: initialTheme,
   sidebarCollapsed: localStorage.getItem('vox_sidebar_collapsed') === 'true',
   chatHidden: localStorage.getItem('vox_chat_hidden') === 'true',
   spotlightTileId: null,
@@ -37,10 +61,23 @@ export const useUIStore = create<UIState>((set, get) => ({
   isNameModalOpen: false,
   toasts: [],
 
+  initTheme: () => {
+    const current = get().theme;
+    applyThemeToDOM(current);
+  },
+
+  setTheme: (theme: 'dark' | 'light') => {
+    localStorage.setItem('call_theme', theme);
+    localStorage.setItem('vox_theme', theme);
+    applyThemeToDOM(theme);
+    set({ theme });
+  },
+
   toggleTheme: () => {
     const nextTheme = get().theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('call_theme', nextTheme);
     localStorage.setItem('vox_theme', nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
+    applyThemeToDOM(nextTheme);
     set({ theme: nextTheme });
   },
 

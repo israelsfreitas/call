@@ -78,12 +78,12 @@ export const ParticipantTile: React.FC<ParticipantTileProps> = ({
     <div
       ref={containerRef}
       onClick={onToggleSpotlight}
-      className={`relative aspect-video rounded-[24px] overflow-hidden bg-[#FFFFFF] border transition-all cursor-pointer flex items-center justify-center group ${
+      className={`relative aspect-video rounded-[24px] overflow-hidden bg-[#FFFFFF] dark:bg-[#181817] border transition-all cursor-pointer flex items-center justify-center group ${
         isSpeaking
-          ? 'border-[#171717] ring-4 ring-[#B7FF2A]/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]'
+          ? 'border-[#171717] dark:border-[#B7FF2A] ring-4 ring-[#B7FF2A]/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]'
           : isSpotlight
-          ? 'border-[#171717] shadow-[0_8px_30px_rgba(0,0,0,0.05)] ring-2 ring-[#171717]'
-          : 'border-[#E7E6DF] hover:border-[#DCDCD4] shadow-[0_4px_20px_rgba(0,0,0,0.015)]'
+          ? 'border-[#171717] dark:border-[#B7FF2A] shadow-[0_8px_30px_rgba(0,0,0,0.05)] ring-2 ring-[#171717] dark:ring-[#B7FF2A]'
+          : 'border-[#E7E6DF] dark:border-[#2A2A28] hover:border-[#DCDCD4] dark:hover:border-[#383835] shadow-[0_4px_20px_rgba(0,0,0,0.015)]'
       }`}
       title={isSpotlight ? 'Clique para ver todos os quadros' : 'Clique para focar este quadro'}
     >
