@@ -1,0 +1,129 @@
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* YouTools Color Tokens */
+  --bg-canvas: #F7F6F0;
+  --bg-surface: #FFFFFF;
+  --bg-chip: #EFEEE8;
+  --bg-hover: #FBFBFA;
+  --border-default: #E7E6DF;
+  --border-hover: #DCDCD4;
+  --ink-primary: #171717;
+  --text-secondary: #686861;
+  --text-muted: #92928A;
+  --text-mono-muted: #55554F;
+  --accent-lime: #B7FF2A;
+  --accent-lime-hover: #A6EC1F;
+  --cta-shadow: rgba(183, 255, 42, 0.35);
+
+  /* Radius tokens */
+  --radius-card: 24px;
+  --radius-input: 22px;
+  --radius-inner: 18px;
+  --radius-btn: 16px;
+  --radius-btn-sm: 12px;
+  --radius-pill: 9999px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+
+::selection {
+  background-color: #171717;
+  color: #ffffff;
+}
+
+input[type="range"], input[type="checkbox"] {
+  accent-color: #171717;
+}
+
+/* Tactile button microinteraction */
+.tactile-btn {
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+}
+.tactile-btn:hover {
+  transform: translateY(-1px);
+}
+.tactile-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Subtle card lift on hover */
+.editorial-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.editorial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+}
+
+/* Player timeline scrubber with tactile thumb and dynamic track */
+.player-scrubber {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+
+.player-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #171717;
+  border: 2.5px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.player-scrubber::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.player-scrubber::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+.player-scrubber::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #171717;
+  border: 2.5px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.player-scrubber::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F6F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #DCDCD4;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #92928A;
+}
